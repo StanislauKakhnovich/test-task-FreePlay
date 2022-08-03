@@ -7,13 +7,13 @@ class IndexMap {
         this.key = key;
         this.value = value;
         this.arr = [...this.arr, [this.key, this.value]];
-        let map = new Map(this.arr);
-        return map;
+        let indexMap = new Map(this.arr);
+        return indexMap;
     }
     has(key) {
         this.key = key;
-        let map = new Map(this.arr);
-        return map.has(this.key);
+        let indexMap = new Map(this.arr);
+        return indexMap.has(this.key);
     }
     hasIndex(index) {
         this.index = index;
@@ -25,24 +25,24 @@ class IndexMap {
     }
     get(key) {
         this.key = key;
-        let map = new Map(this.arr);
-        return map.get(this.key);
+        let indexMap = new Map(this.arr);
+        return indexMap.get(this.key);
     }
     getByIndex(index) {
         this.index = index;
         if(!this.arr[this.index]) return undefined;
         else {
             let key = this.arr[this.index][0];
-            let map = new Map(this.arr);
-            return map.get(key);
+            let indexMap = new Map(this.arr);
+            return indexMap.get(key);
         }
     }
     remove(key) {
         this.key = key;
-        let map = new Map(this.arr);
-        map.delete(this.key);
-        this.arr = [...map];
-        return map;
+        let indexMap = new Map(this.arr);
+        indexMap.delete(this.key);
+        this.arr = [...indexMap];
+        return indexMap;
     }
     size() {
         return this.arr.length;
