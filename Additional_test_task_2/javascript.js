@@ -1,5 +1,4 @@
 
-
 class IndexMap {
     constructor() {
         this.arr = [];
