@@ -14,42 +14,39 @@ class IndexMap {
     set(key, value) {
         this.key = key;
         this.value = value;
-        this.arr = [...this.arr, [this.key, this.value]];
-        let indexMap = new Map(this.arr);
-        return indexMap;
+        let uniqIndex = this.arr.length;
+        this.arr = [...this.arr, [this.key, this.value, uniqIndex]];
+        return this.arr;
     }
     has(key) {
         this.key = key;
-        let indexMap = new Map(this.arr);
-        return indexMap.has(this.key);
+        return this.arr.some(elem=>elem[0]==this.key);
     }
     hasIndex(index) {
         this.index = index;
-        if(!this.arr[this.index]) return false;
-        else {
-            return true;
-        }
+        return this.index < this.arr.length;
     }
     get(key) {
         this.key = key;
-        let indexMap = new Map(this.arr);
-        return indexMap.get(this.key);
+        let arrMiddle = this.arr.filter(elem=>elem[0]==this.key);
+        if (arrMiddle.length == 0) return "There is no such key in the array.";
+        else {
+            let arrResult = [];
+            arrMiddle.forEach(elem=>arrResult=[...arrResult, elem[1]]);
+            return arrResult;
+        }  
     }
     getByIndex(index) {
         this.index = index;
-        if(!this.arr[this.index]) return undefined;
+        if(this.index > this.arr.length) return "There is no such index in the array.";
         else {
-            let key = this.arr[this.index][0];
-            let indexMap = new Map(this.arr);
-            return indexMap.get(key);
+            return this.arr[this.index][1];
         }
     }
     remove(key) {
         this.key = key;
-        let indexMap = new Map(this.arr);
-        indexMap.delete(this.key);
-        this.arr = [...indexMap];
-        return indexMap;
+        this.arr = this.arr.filter(elem=>elem[0]!=this.key);
+        return this.arr;
     }
     size() {
         return this.arr.length;
@@ -65,20 +62,50 @@ class IndexMap {
     union(...map) {
         this.map = map;
         this.arr = this.arr.concat(map);
-        let indexMap = new Map(this.arr);
-        return indexMap;
+        return this.arr;
     }
+    uniq() {
+        let arrMiddle = [];
+        this.arr.forEach(elem=>arrMiddle=[...arrMiddle, elem[1]]);
+        let arrResult = new Set(arrMiddle);
+        return [...arrResult];
+    }
+    uniqKeys() {
+        let arrMiddle = [];
+        this.arr.forEach(elem=>arrMiddle=[...arrMiddle, elem[0]]);
+        let arrResult = new Set(arrMiddle);
+        return [...arrResult];
+    }
+    sort(compare) {
+        this.compare = compare;
+        let arrMiddle = [...this.arr];
+        arrMiddle.sort(this.compare);
+        this.arr = arrMiddle;
+        return this.arr;
+    }       
 }
 
 let collection = new IndexMap();
-console.log(collection.set(1,2));
+console.log(collection.set(2,3));
 console.log(collection.set(2,4));
 console.log(collection.set(3,5));
 console.log(collection.set(6,8));
 console.log(collection.has(6));
 console.log(collection.hasIndex(6));
-console.log(collection.get(3));
+console.log(collection.get(7));
 console.log(collection.getByIndex(3));
-console.log(collection.remove(2));
+console.log(collection.remove(1));
 console.log(collection.size());
-console.log(collection.union([7,8],[8,9]));
+console.log(collection.union([7,8],[8,4]));
+console.log(collection.uniq());
+console.log(collection.uniqKeys());
+
+function compareValue (a,b) {
+    return  a[1]-b[1];
+  };
+console.log(collection.sort(compareValue));
+
+function compareKey (a,b) {
+    return  a[0]-b[0];
+  };
+console.log(collection.sort(compareKey));
