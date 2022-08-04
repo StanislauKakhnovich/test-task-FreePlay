@@ -24,7 +24,7 @@ class IndexMap {
     }
     hasIndex(index) {
         this.index = index;
-        return this.index < this.arr.length;
+        return this.arr.some(elem=>elem[2]==this.index);
     }
     get(key) {
         this.key = key;
@@ -38,9 +38,13 @@ class IndexMap {
     }
     getByIndex(index) {
         this.index = index;
-        if(this.index > this.arr.length) return "There is no such index in the array.";
+        if(this.arr.every(elem=>elem[2]!=this.index)) return "There is no such index in the array.";
         else {
-            return this.arr[this.index][1];
+            let copyArr = [...this.arr];
+            let resultMiddle = copyArr.find(elem=>elem[2]==this.index);
+            let result = [...resultMiddle];
+            result.pop();
+            return result;
         }
     }
     remove(key) {
@@ -52,16 +56,20 @@ class IndexMap {
         return this.arr.length;
     }
 
-    // forEach(value, key, index) {
-    //     this.value = value;
-    //     this.key = key;
-    //     this.index = index;
-    //     return //this.arr.forEach((this.value, this.key, this.index))
-    // }
+    forEach(functionCb) {
+        this.functionCb = functionCb;
+        return this.arr.forEach(this.functionCb);
+    }
 
     union(...map) {
         this.map = map;
-        this.arr = this.arr.concat(map);
+        let maxIndex = this.arr[0][2];
+        for (let i=1; i<this.arr.length; i++) {
+            if (this.arr[i][2]>maxIndex) maxIndex = this.arr[i][2];
+        }
+        this.map = this.map.map((elem, index)=>elem=[...elem, ++maxIndex]);
+        this.arr = this.arr.concat(this.map);
+
         return this.arr;
     }
     uniq() {
@@ -76,26 +84,65 @@ class IndexMap {
         let arrResult = new Set(arrMiddle);
         return [...arrResult];
     }
-    sort(compare) {
-        this.compare = compare;
+    sort(compareKeyValue) {
+        this.compareKeyValue = compareKeyValue;
         let arrMiddle = [...this.arr];
-        arrMiddle.sort(this.compare);
+        arrMiddle.sort(this.compareKeyValue);
         this.arr = arrMiddle;
         return this.arr;
-    }       
+    } 
+    sortIndex(compareIndex) {
+        this.compareIndex = compareIndex;
+        let arrMiddle = [...this.arr];
+        arrMiddle.sort(this.compareIndex);
+        this.arr = arrMiddle;
+        return this.arr;
+
+    }     
+    setTo(index, value) {
+        this.index = index;
+        this.value = value;
+        let maxIndex = this.arr[0][2];
+        for (let i=1; i<this.arr.length; i++) {
+            if (this.arr[i][2]>maxIndex) maxIndex = this.arr[i][2];
+        }
+        this.value = [...this.value, ++maxIndex];
+        let copyArr = [...this.arr];
+        copyArr.splice(++this.index, 0, this.value);
+        this.arr = copyArr;
+        return this.arr;
+    } 
+    removeAt(index, count=1) {
+        this.index = index;
+        this.count = count;
+        let copyArr = [...this.arr];
+        copyArr.splice(++this.index, this.count);
+        this.arr = copyArr;
+        return this.arr;
+    }
 }
 
 let collection = new IndexMap();
 console.log(collection.set(2,3));
-console.log(collection.set(2,4));
+console.log(collection.set(9,4));
 console.log(collection.set(3,5));
 console.log(collection.set(6,8));
 console.log(collection.has(6));
-console.log(collection.hasIndex(6));
+console.log(collection.hasIndex(2));
 console.log(collection.get(7));
 console.log(collection.getByIndex(3));
 console.log(collection.remove(1));
 console.log(collection.size());
+
+function functionCb(elem) {
+    let value = elem[1];
+    let key = elem[0];
+    let index = elem[2];
+    return console.log ("value = "+value, "key = "+key, "index = "+index);
+
+}
+collection.forEach(functionCb);
+
 console.log(collection.union([7,8],[8,4]));
 console.log(collection.uniq());
 console.log(collection.uniqKeys());
@@ -109,3 +156,13 @@ function compareKey (a,b) {
     return  a[0]-b[0];
   };
 console.log(collection.sort(compareKey));
+
+function compareIndex (a,b) {
+    return  a[2]-b[2];
+  };
+console.log(collection.sort(compareIndex));
+
+console.log(collection.setTo(2, [5,4]));
+
+console.log(collection.removeAt(2, 2));
+

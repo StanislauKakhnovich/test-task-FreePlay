@@ -54,12 +54,6 @@ class IndexMap {
         return this.arr.length;
     }
 
-    // forEach(value, key, index) {
-    //     this.value = value;
-    //     this.key = key;
-    //     this.index = index;
-    //     return //this.arr.forEach((this.value, this.key, this.index))
-    // }
 }
 
 let collection = new IndexMap();

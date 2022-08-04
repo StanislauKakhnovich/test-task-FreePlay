@@ -23,11 +23,9 @@ function move(from, to, duration, speed) {
                 }  
                 else posPy += speed;
             } 
-            rectMove.style.transform = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + posPx + ',' + posPy + ')'
+            rectMove.style.transform = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + posPx + ',' + posPy + ')';
         }
-        console.log(posPx);
-        console.log(posPy);
     }
 }
 
-document.querySelector('#move').addEventListener('click', move.bind(null, [0,0], [900,300], 4000, 10));
+document.querySelector('#move').addEventListener('click', move.bind(null, [0,0], [900,300], 1000, 10));
