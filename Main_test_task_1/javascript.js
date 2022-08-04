@@ -7,7 +7,6 @@
 var rectAnimation = document.querySelector('.move');
 
 function move(from, to, duration, speed) {
-    
     var posPx = from[0];
     var posPy = from[1];
     var id = setInterval(frame, 10);
@@ -57,7 +56,6 @@ function rotate(position, duration, speed) {
 document.querySelector('#rotate').addEventListener('click', rotate.bind(null, [10,10], 1000, 5));
 
 function dynamic(from, to, duration, speed) {
-    
     var posPx = from[0];
     var posPy = from[1];
     var id = setInterval(frame, 10);
