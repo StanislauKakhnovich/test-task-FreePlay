@@ -4,10 +4,10 @@
 // Функции должны выдавать массивы значений, для промежутка времени. Например:
 // moveTo (from, to, duration, speed) и т.д.
 
-
+var rectAnimation = document.querySelector('.move');
 
 function move(from, to, duration, speed) {
-    var rectMove = document.querySelector('.move');
+    
     var posPx = from[0];
     var posPy = from[1];
     var id = setInterval(frame, 10);
@@ -31,9 +31,27 @@ function move(from, to, duration, speed) {
                 }  
                 else posPy += speed;
             } 
-            rectMove.style.transform = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + posPx + ',' + posPy + ')';
+            rectAnimation.style.transform = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + posPx + ',' + posPy + ')';
+        }
+    }
+}
+document.querySelector('#move').addEventListener('click', move.bind(null, [10,10], [800,10], 1000, 10));
+
+function rotate(position, duration, speed) {
+    var posPx = position[0];
+    var posPy = position[1];
+    var id = setInterval(frame, speed);
+    let  angle = 0, currentAngle;
+    let start = Date.now();
+    function frame() {
+        let timePassed = Date.now() - start;
+        if (timePassed >= duration) {
+            clearInterval(id);
+        } else {
+            currentAngle = angle++ * Math.PI / 180;
+            rectAnimation.style.transform = 'matrix(' + Math.cos(currentAngle) + ',' + Math.sin(currentAngle) + ',' + -Math.sin(currentAngle) + ',' + Math.cos(currentAngle) + ','  + posPx + ',' + posPy + ')';
         }
     }
 }
 
-document.querySelector('#move').addEventListener('click', move.bind(null, [0,0], [900,300], 1000, 10));
+document.querySelector('#rotate').addEventListener('click', rotate.bind(null, [10,10], 3000, 5));
