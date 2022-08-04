@@ -1,3 +1,4 @@
+// Дополнительное:
 // 2. Как в основном задании (2), только реализовать методы:
 // - union(объединение коллекций)
 // - uniq(достать коллекцию уникальных значений)
@@ -14,7 +15,9 @@ class IndexMap {
     set(key, value) {
         this.key = key;
         this.value = value;
-        let uniqIndex = this.arr.length;
+        let uniqIndex = this.arr.length; 
+        //В данной коллекции я добавил уникальные неизменяемые индексы для каждой пары key:value в виде [key, value, index].
+        //Здесь и в последующих методах я буду оперировать уникальными индексами. 
         this.arr = [...this.arr, [this.key, this.value, uniqIndex]];
         return this.arr;
     }
