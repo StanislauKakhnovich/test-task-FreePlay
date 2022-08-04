@@ -54,4 +54,37 @@ function rotate(position, duration, speed) {
     }
 }
 
-document.querySelector('#rotate').addEventListener('click', rotate.bind(null, [10,10], 3000, 5));
+document.querySelector('#rotate').addEventListener('click', rotate.bind(null, [10,10], 1000, 5));
+
+function dynamic(from, to, duration, speed) {
+    
+    var posPx = from[0];
+    var posPy = from[1];
+    var id = setInterval(frame, 10);
+    let counter = 1;
+    let start = Date.now();
+    function frame() {
+        let timePassed = Date.now() - start;
+        if (timePassed >= duration) {
+            clearInterval(id);
+        } else { 
+            if(posPx<=to[0]) {
+                if(posPx<Math.abs(from[0]-to[0])/2) counter = counter*1.2;
+                else if (posPx>Math.abs(from[0]-to[0])/2) counter = counter/1.2;
+                if(Math.abs(from[0]-to[0]) >= Math.abs(from[1]-to[1]) && counter >= 0) {
+                    posPx += speed*counter;
+                } 
+                else posPx += (Math.abs(from[0]-to[0]))/(Math.abs(from[1]-to[1]))*speed*counter;
+            } 
+            if(posPy<=to[1]) {
+                if(Math.abs(from[0]-to[0]) >= Math.abs(from[1]-to[1])) {
+                    posPy += ((Math.abs(from[1]-to[1]))/(Math.abs(from[0]-to[0])))*speed*counter;
+                    
+                }  
+                else posPy += speed*counter;
+            } 
+            rectAnimation.style.transform = 'matrix(' + 1 + ',' + 0 + ',' + 0 + ',' + 1 + ',' + posPx + ',' + posPy + ')';
+        }
+    }
+}
+document.querySelector('#dynamic').addEventListener('click', dynamic.bind(null, [10,10], [800,10], 2000, 2));
